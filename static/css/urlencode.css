@@ -1,0 +1,72 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	background: #f2f2f2;
+	color: #555;
+	font: 12px/160% Verdana, Arial, 'Bitstream Vera Sans', sans-serif;
+	text-align: center;
+}
+
+* {margin: 0; padding: 0;}
+
+.footer {
+	float: left;
+	width: 100%;
+	padding: 0 0 10px;
+	border-top: 4px solid #d9d9d9;
+	background: #f2f2f2;
+	color: #999;
+	font-size: 11px;
+	text-align: center;
+}
+.footer a {border: none;}
+.footer p {
+	margin: 0 0 30px;
+	padding: 30px 0 0;
+	text-align: center;
+	clear: both;
+}
+
+.header {
+	float: left;
+	width: 100%;
+	background: #262f35 url(/Content/images/header.gif) top left repeat-x;
+	height: 98px;
+}
+.header h1 a {
+	display: block;
+	position: absolute;
+	width: 342px;
+	height: 36px;
+	margin-top: 29px;
+	border: none;
+	background: transparent url(/Content/images/logo.gif) no-repeat;
+	text-decoration: none;
+	text-indent: -9999px;
+}
+.header h2 {display: none;}
+ 
+.pagebar {
+	float: left;
+	width: 100%;
+	background: #bde562 url(/Content/images/bar.gif) top left repeat-x;
+	border-bottom: 1px solid #a4cf43;
+	height: 20px;
+}
+.pagebar h1 {
+	padding: 12px 0 9px 7px;
+	color: #fff;
+	font-size: 20px;
+	font-family: 'Trebuchet MS', Trebuchet, Arial, sans-serif;
+}
+
+.box {
+	width: 215px; 
+	float: left; 
+	text-align: left;
+	margin: 10px;
+}
+.box_icon {
+	padding-right: 5px;
+	padding-bottom: 3px;
+}

@@ -1,0 +1,64 @@
+###
+### Base template for Urlenco.de views
+###
+
+#def content()
+    #pass
+#end def 
+
+#def assetroot()
+    #if $getVar('ASSET_ROOT')
+        #return $ASSET_ROOT
+    #end if
+    #return ''
+#end def
+
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<title>Urlenco.de - Compress your URLs!</title>
+		<meta name="keywords" content="urlencode, tinyurl, bookmarklet, twitter, json, url, rurl, urldecode"/>
+		<meta name="description" content="Urlenco.de is a quick and easy utility for shortening long, complicated URLs into a small managable URL"/>
+		<link rel="stylesheet" media="screen" href="/static/css/urlencode.css"/>	
+	</head>
+	
+	<body>
+		<div class="header">
+			<div style="margin-top: 30px;">
+				<a href="/">
+					<img src="/static/img/logo.png" border="0" alt="Urlenco.de" title="Urlenco.de"/>
+				</a>
+			</div>
+		</div>
+		<div class="pagebar">
+		</div>
+		<div style="background-color: #FFFFFF;">
+			<br clear="all"/>
+			<br/>
+			<div style="width: 950px; margin-left: auto; margin-right: auto; background-color: #FFFFFF;">
+
+                $content()
+
+				<br/>
+				<br/>
+			</div>
+			<span style="float: right; margin-right: 5px; clear: both;">
+				<a href="http://geekisp.com/?ref=urlencode"><img src="/static/img/geekisp_lg.jpg" alt="[ Supported by GeekISP ]" title="Supported by GeekISP" border="0"/></a>
+			</span>
+			<br/>
+			<br/>
+		</div>
+		<script type="text/javascript">
+			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+			var pageTracker = _gat._getTracker("UA-4216293-1");
+			pageTracker._initData();
+			pageTracker._trackPageview();
+		</script>
+		<div class="footer">
+			&copy; Urlenco.de 2009 | R. Tyler Ballance
+		</div>
+	</body>
+</html>
