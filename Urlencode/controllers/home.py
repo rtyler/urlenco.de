@@ -3,12 +3,15 @@
 from Urlencode import controllers
 from Urlencode import views
 
-paths = ('/', '/index.html', '/index', '/Default.aspx',)
-
-class index(controllers.BaseController):
+class home(controllers.BaseController):
     content_type = 'text/html'
 
-    def execute(self, **kwargs):
-        return unicode(views.get('index')(searchList=[{'controller' : self}]))
+    @controllers.action(paths=('/', '/Default.aspx'))
+    def index(self, **kwargs):
+        return self.render('index')
+
+    @controllers.action()
+    def about(self, **kwargs):
+        return self.render('about')
 
 

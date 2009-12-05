@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 from __future__ import with_statement
 
+import logging
 import os
 import sys
+import types
+
+from Urlencode import views
 
 def __mapControllers():
     cont_dir = os.path.dirname(__file__)
@@ -14,7 +18,6 @@ def __mapControllers():
             continue
 
         name = controller.replace('.py', '')
-        print name
         __import__('Urlencode.controllers.%s' % name)
         module = sys.modules.get('Urlencode.controllers.%s' % name)
         klass = getattr(module, name, None)
@@ -22,8 +25,16 @@ def __mapControllers():
         if not klass:
             continue
 
-        for p in module.paths:
-            yield (p, klass)
+        for attr in dir(klass):
+            o = getattr(klass, attr)
+            if not isinstance(o, (types.FunctionType, types.MethodType)):
+                continue
+
+            if not getattr(o, 'paths', False):
+                continue
+
+            for path in getattr(o, 'paths'):
+                yield (path, (klass, attr))
 
 controllers = None
 
@@ -42,6 +53,15 @@ code_map = {
         404 : '404 Not Found',
 }
 
+def action(**kwargs):
+    def inner_f(method):
+        paths = ('/' + method.func_name,)
+        if kwargs.get('paths'):
+            paths = paths + kwargs['paths']
+        method.paths = paths
+        return method
+    return inner_f
+
 class BaseController(object):
     content_type = 'text/plain'
     _start = None
@@ -54,7 +74,11 @@ class BaseController(object):
     def prepare(self):
         self._start(code_map[self.code], [('Content-Type', self.content_type)])
 
-    def execute(self, *args, **kwargs):
-        raise GenericControllerException('%s must implement an execute method' % self.__class__.__name__)
+    def render(self, name, **kwargs):
+        kwargs.update({'controller' : self})
+        template = views.get(name)
+        if not template:
+            raise GenericControllerException('Could not find "%s" view' % name)
+        return unicode(template(searchList=[kwargs]))
 
 

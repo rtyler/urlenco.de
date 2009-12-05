@@ -26,9 +26,10 @@ def app(environ, start_response):
     controller = controllers.get(path)
 
     if controller:
-        controller = controller(start_response, **environ)
+        klass, attr = controller
+        controller = klass(start_response, **environ)
         controller.prepare()
-        return controller.execute()
+        return getattr(klass, attr)(controller)
 
     ##
     ## If we don't have a static file, or somebody is giving me a crap URL
