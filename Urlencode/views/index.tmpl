@@ -2,5 +2,105 @@
 #extends base.base
 
 #def content()
-    Hello There
+	<h2>
+		Compress your URLs!
+	</h2>
+	<script type="text/javascript">
+	<!--
+		function explainRedirects() 
+		{
+			document.getElementById("redirect_explanation").style.display = "block";
+			return false;
+		}
+		function hideExplainRedirects()
+		{
+			document.getElementById("redirect_explanation").style.display = "none";
+			return false;
+		}
+	-->
+	</script>
+	<br/>
+	<div style="clear: both;">
+		<form action="/Api/Post" method="POST">
+			<input type="text" name="unencoded_url" id="unencoded_url" style="font-size: 16px; width: 325px; font-weight: bold; color: #CECECE;" value="http://www.google.com/" onfocus="this.value=''; this.style.color = 'black';"/>
+			<div style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px; width: 450px;">
+				<input type="radio" name="redirect_type" value="http" checked /> HTTP Redirect &nbsp;&nbsp;&nbsp;<input type="radio" name="redirect_type" value="javascript" /> Javascript Redirect
+				<span style="margin-left: 10px;"><a href="#" onclick="return explainRedirects();"><small>what's this?</small></a></span>
+			</div>
+			<input type="submit" value="Encode it!"/>
+		</form>
+	</div>
+	<div style="top: 100px; display: none; position: absolute; width: 450px; left: 0; right: 0; margin-left: auto; margin-right: auto" id="redirect_explanation">
+		<div style="border: 1px solid #CCC; background-color: #EFEFEF; padding: 5px;">
+			<div style="background-color: #FFF; padding: 3px;">
+				<strong>HTTP vs. Javascript Redirects?</strong>
+				<br/>
+				<blockquote>
+					HTTP redirects tell the browser to immediately bounce to a different URL, by returning the redirect code (302), which can cause some crawlers and other 
+					automated web page loading/validating tools to break because of their poor support for HTTP redirects. A Javascript redirect returns an actual page with 
+					the "load page" status code (200) and then the browser immediately loads Javascript that tells the browser to change the "current window's" location to 
+					another. 
+					<br/><br/>
+					As far as the users of your Urlenco.de URLs, the different is negligible and won't even be noticed, but in case one doesn't work, you can always try the other :)
+				</blockquote>
+				<br/>
+				<span style="float: right; margin-right: 10px;"><a href="#" onclick="return hideExplainRedirects();"><strong>close</strong></a></span>
+				<br clear="all"/>
+			</div>
+		</div>
+	</div>
+	<br/>
+	<br/>
+	<center>
+		<div class="box">
+			<h3>Add the bookmarklet!</h3>
+			<br/>
+			<img src="${asset_base()}/static/img/book.gif" alt="Bookmarklet it!" align="left" class="box_icon"/>
+			Drag the link below to your bookmark bar in your browser and have <em>Urlenco.de</em> just one click away from anywhere! The Urlenco.de bookmarklet will allow for zee most effizient URL encoding possible!
+			<br/>
+			<center>
+				<a href="javascript:void(location.href='http://urlenco.de/Post.aspx?unencoded_url='+escape(location.href))"><strong>Urlenco.de it!</strong></a>
+			</center>
+		</div>
+		<div class="box">
+			<h3><em>Urlenco.de</em> APIs</h3>
+			<br/>
+			<img src="${asset_base()}/static/img/code.gif" alt="Code!" align="left" class="box_icon"/>
+			Use <em>Urlenco.de</em> in your own applications through our dead-simple JSON interface which provides the ability to encode, and decode URLs.
+			<br/>
+			<center>
+				For more <a href="/Api">check out zee Developer page</a>
+			</center>
+		</div>
+		<div class="box">
+			<h3><em>Urlenco.de</em> Stats</h3>
+			<br/>
+			<img src="${asset_base()}/static/img/graph.png" alt="Graphs!" align="left" class="box_icon"/>
+			Check out some of the statistics on what people are using <em>Urlenco.de</em> for!
+			<br/>
+			<center>
+				See the <a href="/Home/Stats">Stats page</a> for more!
+			</center>
+		</div>
+		<div class="box">
+			<h3>Support <em>Urlenco.de</em></h3>
+			<br/>
+			<img src="${asset_base()}/static/img/card.gif" alt="Support Urlenco.de!" align="left" class="box_icon"/>
+			Drop a bit of change in the tip jar and help keep <em>Urlenco.de</em> up and running :)
+			<br/>
+			<center>
+				<br/>
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+				<input type="hidden" name="cmd" value="_s-xclick">
+				<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+				<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+				<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+				">
+				</form>
+			</center>
+		</div>
+	</center>
+	<br/>
+	<br clear="all"/>
+	<br/>
 #end def

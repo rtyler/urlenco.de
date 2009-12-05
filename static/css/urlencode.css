@@ -30,7 +30,7 @@ body {
 .header {
 	float: left;
 	width: 100%;
-	background: #262f35 url(/Content/images/header.gif) top left repeat-x;
+	background: #262f35 url(http://agentdero.cachefly.net/urlenco.de/static/img/header.gif) top left repeat-x;
 	height: 98px;
 }
 .header h1 a {
@@ -40,7 +40,7 @@ body {
 	height: 36px;
 	margin-top: 29px;
 	border: none;
-	background: transparent url(/Content/images/logo.gif) no-repeat;
+	background: transparent url(http://agentdero.cachefly.net/urlenco.de/static/img/logo.gif) no-repeat;
 	text-decoration: none;
 	text-indent: -9999px;
 }
@@ -49,7 +49,7 @@ body {
 .pagebar {
 	float: left;
 	width: 100%;
-	background: #bde562 url(/Content/images/bar.gif) top left repeat-x;
+	background: #bde562 url(http://agentdero.cachefly.net/urlenco.de/static/img/bar.gif) top left repeat-x;
 	border-bottom: 1px solid #a4cf43;
 	height: 20px;
 }

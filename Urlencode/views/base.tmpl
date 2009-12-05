@@ -2,11 +2,15 @@
 ### Base template for Urlenco.de views
 ###
 
+#def asset_base()
+    #return 'http://agentdero.cachefly.net/urlenco.de'
+#end def
+
 #def header()
     <div class="header">
         <div style="margin-top: 30px;">
             <a href="/">
-                <img src="/static/img/logo.png" border="0" alt="Urlenco.de" title="Urlenco.de"/>
+                <img src="${asset_base()}/static/img/logo.png" border="0" alt="Urlenco.de" title="Urlenco.de"/>
             </a>
         </div>
     </div>
@@ -44,7 +48,7 @@
 		<title>$title()</title>
 		<meta name="keywords" content="urlencode, tinyurl, bookmarklet, twitter, json, url, rurl, urldecode"/>
 		<meta name="description" content="Urlenco.de is a quick and easy utility for shortening long, complicated URLs into a small managable URL"/>
-		<link rel="stylesheet" media="screen" href="/static/css/urlencode.css"/>	
+		<link rel="stylesheet" media="screen" href="${asset_base()}/static/css/urlencode.css"/>	
 	</head>
 	
 	<body>
@@ -62,7 +66,7 @@
 				<br/>
 			</div>
             <span style="float: right; margin-right: 5px; clear: both;">
-                <a href="http://geekisp.com/?ref=urlencode"><img src="/static/img/geekisp_lg.jpg" alt="[ Supported by GeekISP ]" title="Supported by GeekISP" border="0"/></a>
+                <a href="http://geekisp.com/?ref=urlencode"><img src="${asset_base()}/static/img/geekisp_lg.jpg" alt="[ Supported by GeekISP ]" title="Supported by GeekISP" border="0"/></a>
             </span>
             <br/>
             <br/>
