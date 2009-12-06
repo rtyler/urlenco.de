@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import with_statement
 
+import cgi
 import logging
 import os
 import sys
@@ -62,17 +63,84 @@ def action(**kwargs):
         return method
     return inner_f
 
+class InputProcessed(object):
+    def read(self, *args):
+        raise EOFError('The wsgi.input stream has already been consumed')
+    readline = readlines = __iter__ = read
+
+
+class Method(object):
+    GET  = 1
+    POST = 2
+
 class BaseController(object):
     content_type = 'text/plain'
     _start = None
+    environ = None
     code = 200
+    posted = None
+    method = Method.GET
+    args = None
 
     def __init__(self, start_response, **kwargs):
-        self.__dict__.update(kwargs)
+        self.environ = kwargs
+        self.args = {}
+        ##
+        ## Set all kwargs on myself, but make sure the names are getattr-able
+        ## i.e. "wsgi.input" -> "wsgi_input"
+        self.__dict__.update(dict(((k.replace('.', '_'), v) for k, v in kwargs.iteritems())))
         self._start = start_response
+
+        if self.REQUEST_METHOD == 'POST':
+            self.method = Method.POST
+            for k, v in dict(self.__process_form()).iteritems():
+                if isinstance(v, cgi.MiniFieldStorage):
+                    self.args[k] = v.value
+                else:
+                    self.args[k] = v
+        else:
+            self.method = Method.GET
+            if self.QUERY_STRING:
+                self.args = dict(self.__iterquerystring())
+
 
     def prepare(self):
         self._start(code_map[self.code], [('Content-Type', self.content_type)])
+
+    def __iterquerystring(self):
+        if not self.REQUEST_METHOD == 'GET':
+            yield (None, None)
+        pieces = self.QUERY_STRING.split('&')
+        for piece in pieces:
+            parts = piece.split('=')
+            if len(parts) == 1:
+                parts.append(None)
+            yield (parts[0], parts[1])
+
+
+    def __process_form(self):
+        if not self.REQUEST_METHOD == 'POST':
+            return None
+
+        input = self.wsgi_input
+
+        if hasattr(self, 'wsgi_post_form'):
+            ##
+            ## We've already got a processed form
+            if self.wsgi_post_form[0] is input:
+                return self.wsgi_post_form[2]
+
+        # This must be done to avoid a bug in cgi.FieldStorage
+        self.environ.setdefault('QUERY_STRING', '')
+        fs = cgi.FieldStorage(fp=input, environ=self.environ, keep_blank_values=1)
+
+        new_input = InputProcessed()
+        post_form = (new_input, input, fs)
+        self.wsgi_post_form = post_form
+        self.wsgi_input = new_input
+        return fs
+
+
 
     def render(self, name, **kwargs):
         kwargs.update({'controller' : self})

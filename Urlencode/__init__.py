@@ -29,7 +29,7 @@ def app(environ, start_response):
         klass, attr = controller
         controller = klass(start_response, **environ)
         controller.prepare()
-        return [getattr(klass, attr)(controller) + '\r\n']
+        return [getattr(klass, attr)(controller, **controller.args) + '\r\n']
 
     ##
     ## If we don't have a static file, or somebody is giving me a crap URL
