@@ -15,8 +15,8 @@ class home(controllers.BaseController):
 
     @controllers.action(paths=('/Developer.aspx',))
     def developers(self, **kwargs):
-        return 'Developers'
+        return self.render('developers')
 
     @controllers.action(paths=('/Stats.aspx',))
     def stats(self, **kwargs):
-        return 'Stats'
+        return self.render('stats')
