@@ -2,6 +2,7 @@
 from __future__ import with_statement
 
 import cgi
+import itertools
 import logging
 import os
 import sys
@@ -69,9 +70,8 @@ class InputProcessed(object):
     readline = readlines = __iter__ = read
 
 
-class Method(object):
-    GET  = 1
-    POST = 2
+GET  = 1
+POST = 2
 
 class BaseController(object):
     content_type = 'text/plain'
@@ -79,7 +79,7 @@ class BaseController(object):
     environ = None
     code = 200
     posted = None
-    method = Method.GET
+    method = GET
     args = None
 
     def __init__(self, start_response, **kwargs):
@@ -92,14 +92,14 @@ class BaseController(object):
         self._start = start_response
 
         if self.REQUEST_METHOD == 'POST':
-            self.method = Method.POST
+            self.method = POST
             for k, v in dict(self.__process_form()).iteritems():
                 if isinstance(v, cgi.MiniFieldStorage):
                     self.args[k] = v.value
                 else:
                     self.args[k] = v
         else:
-            self.method = Method.GET
+            self.method = GET
             if self.QUERY_STRING:
                 self.args = dict(self.__iterquerystring())
 
@@ -110,13 +110,17 @@ class BaseController(object):
     def __iterquerystring(self):
         if not self.REQUEST_METHOD == 'GET':
             yield (None, None)
-        pieces = self.QUERY_STRING.split('&')
-        for piece in pieces:
-            parts = piece.split('=')
-            if len(parts) == 1:
-                parts.append(None)
-            yield (parts[0], parts[1])
-
+        pieces = sorted((p.split('=') for p in self.QUERY_STRING.split('&')))
+        ##
+        ## This complexity exists so we handle duplicate keys correctly, i.e.
+        ## `foo=bar&foo=baz` --> {'foo' : ['bar', 'baz']}
+        for key, chunk in itertools.groupby(pieces, lambda p: p[0]):
+            value = []
+            for c in chunk:
+                value.append(c[1])
+            if len(value) == 1:
+                value = value[0]
+            yield (key, value)
 
     def __process_form(self):
         if not self.REQUEST_METHOD == 'POST':
@@ -148,5 +152,4 @@ class BaseController(object):
         if not template:
             raise GenericControllerException('Could not find "%s" view' % name)
         return unicode(template(searchList=[kwargs]))
-
 

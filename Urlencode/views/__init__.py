@@ -17,7 +17,8 @@ def __mapTemplates():
     cwd = os.getcwd()
     try:
         os.chdir(template_dir)
-        os.system('cheetah compile *.tmpl')
+        if not os.getenv('NOCOMPILE'):
+            os.system('cheetah compile *.tmpl')
     finally:
         os.chdir(cwd)
 
