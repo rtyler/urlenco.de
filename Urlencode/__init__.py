@@ -21,7 +21,7 @@ static_types = {
 }
 
 def app(environ, start_response):
-    pprint(environ)
+    #pprint(environ)
     path = environ['PATH_INFO']
     controller = controllers.get(path)
 

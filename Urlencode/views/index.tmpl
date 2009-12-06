@@ -21,7 +21,7 @@
 	</script>
 	<br/>
 	<div style="clear: both;">
-		<form action="/Api/Post" method="POST">
+		<form action="/encode" method="POST">
 			<input type="text" name="unencoded_url" id="unencoded_url" style="font-size: 16px; width: 325px; font-weight: bold; color: #CECECE;" value="http://www.google.com/" onfocus="this.value=''; this.style.color = 'black';"/>
 			<div style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px; width: 450px;">
 				<input type="radio" name="redirect_type" value="http" checked /> HTTP Redirect &nbsp;&nbsp;&nbsp;<input type="radio" name="redirect_type" value="javascript" /> Javascript Redirect
@@ -59,7 +59,7 @@
 			Drag the link below to your bookmark bar in your browser and have <em>Urlenco.de</em> just one click away from anywhere! The Urlenco.de bookmarklet will allow for zee most effizient URL encoding possible!
 			<br/>
 			<center>
-				<a href="javascript:void(location.href='http://urlenco.de/Post.aspx?unencoded_url='+escape(location.href))"><strong>Urlenco.de it!</strong></a>
+				<a href="javascript:void(location.href='http://urlenco.de/encode?unencoded_url='+escape(location.href))"><strong>Urlenco.de it!</strong></a>
 			</center>
 		</div>
 		<div class="box">
@@ -69,7 +69,7 @@
 			Use <em>Urlenco.de</em> in your own applications through our dead-simple JSON interface which provides the ability to encode, and decode URLs.
 			<br/>
 			<center>
-				For more <a href="/Api">check out zee Developer page</a>
+				For more <a href="/developers">check out zee Developer page</a>
 			</center>
 		</div>
 		<div class="box">
@@ -79,7 +79,7 @@
 			Check out some of the statistics on what people are using <em>Urlenco.de</em> for!
 			<br/>
 			<center>
-				See the <a href="/Home/Stats">Stats page</a> for more!
+				See the <a href="/stats">Stats page</a> for more!
 			</center>
 		</div>
 		<div class="box">
