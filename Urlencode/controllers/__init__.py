@@ -52,6 +52,8 @@ class GenericControllerException(Exception):
 
 code_map = {
         200 : '200 OK',
+        301 : 'Moved Permanently',
+        302 : 'Moved Temporarily',
         404 : '404 Not Found',
 }
 
@@ -81,10 +83,12 @@ class BaseController(object):
     posted = None
     method = GET
     args = None
+    headers = None
 
     def __init__(self, start_response, **kwargs):
         self.environ = kwargs
         self.args = {}
+        self.headers = []
         ##
         ## Set all kwargs on myself, but make sure the names are getattr-able
         ## i.e. "wsgi.input" -> "wsgi_input"
@@ -103,9 +107,10 @@ class BaseController(object):
             if self.QUERY_STRING:
                 self.args = dict(self.__iterquerystring())
 
-
-    def prepare(self):
-        self._start(code_map[self.code], [('Content-Type', self.content_type)])
+    def finalize(self, output):
+        print self.headers
+        self._start(code_map[self.code], [('Content-Type', self.content_type)] + self.headers)
+        return output
 
     def __iterquerystring(self):
         if not self.REQUEST_METHOD == 'GET':
@@ -143,8 +148,6 @@ class BaseController(object):
         self.wsgi_post_form = post_form
         self.wsgi_input = new_input
         return fs
-
-
 
     def render(self, name, **kwargs):
         kwargs.update({'controller' : self})

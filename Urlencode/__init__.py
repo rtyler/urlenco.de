@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import with_statement
 
+import logging
 import os
 
 from eventlet import api
@@ -20,7 +21,7 @@ static_types = {
         'js'  : 'text/javascript',
 }
 
-def app(environ, start_response):
+def __app(environ, start_response):
     #pprint(environ)
     path = environ['PATH_INFO']
     controller = controllers.get(path)
@@ -28,8 +29,8 @@ def app(environ, start_response):
     if controller:
         klass, attr = controller
         controller = klass(start_response, **environ)
-        controller.prepare()
-        return [getattr(klass, attr)(controller, **controller.args) + '\r\n']
+        result = [getattr(klass, attr)(controller, **controller.args) + '\r\n']
+        return controller.finalize(result)
 
     ##
     ## If we don't have a static file, or somebody is giving me a crap URL
@@ -52,3 +53,10 @@ def app(environ, start_response):
         if fd:
             fd.close()
 
+def app(environ, start_response):
+    try:
+        return __app(environ, start_response)
+    except Exception, ex:
+        logging.error('Serving a 500: %s' % ex)
+        start_response('500 Server Error', [('Content-Type', 'text/plain')])
+        return ['Server error\r\n']
