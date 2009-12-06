@@ -1,0 +1,28 @@
+#from Urlencode.views import base
+#extends base.base
+
+#def content()
+    #if not $getVar('encoded')
+        <h2>Whoops! Something broked!</h2>
+        <p>
+            Please go <a href="#" onClick="history.go(-2)">back from whence you came</a> and try again :(
+        </p>
+        #return
+    #end if
+
+    <div>
+        <h2>
+            Here's your encoded URL!
+        </h2>
+        <br/>
+        <p>
+            <big>
+                <a href="${encoded}" target="_blank">${encoded}</a>
+            </big>
+            <br/>
+            (Opens in a new window)
+            <br/>
+            <br/>
+        </p>
+    </div>
+#end def
