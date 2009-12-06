@@ -13,3 +13,8 @@ class api(controllers.BaseController):
     def encode_json(self, **kwargs):
         return '/api/encode'
 
+    @controllers.action(paths=('/Dispatch.aspx',))
+    def dispatch(self, encoded_url=None, **kwargs):
+        self.code = 301
+        self.headers.append( ('Location', encoded_url) )
+        return encoded_url
