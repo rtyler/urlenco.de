@@ -29,18 +29,16 @@ def app(environ, start_response):
         klass, attr = controller
         controller = klass(start_response, **environ)
         controller.prepare()
-        return getattr(klass, attr)(controller)
+        return [getattr(klass, attr)(controller) + '\r\n']
 
     ##
     ## If we don't have a static file, or somebody is giving me a crap URL
     ## I'm just going to bounce them back
-    if '..' in path or not path.startswith('static') \
-            or not os.path.exists(path):
+    if '..' in path or not path.startswith('/static') \
+            or not os.path.exists(os.getcwd() + path):
         start_response('404 Not Found', [('Content-Type', 'text/plain')])
         return ['Not Found\r\n']
 
-    start_response('404 Not Found', [('Content-Type', 'text/plain')])
-    return ['Not Found\r\n']
     segments = path.split('.')
     if static_types.get(segments[-1]):
         start_response('200 OK', [('Content-Type', static_types[segments[-1]])])
@@ -48,8 +46,8 @@ def app(environ, start_response):
         start_response('200 OK', [('Content-Type', 'text/plain')])
     fd = None
     try:
-        fd = open(path, 'r')
-        return fd.read()
+        fd = open(os.getcwd() + path, 'r')
+        return [fd.read()]
     finally:
         if fd:
             fd.close()
