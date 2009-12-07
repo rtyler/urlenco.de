@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import with_statement
 
+import ConfigParser
 import logging
 import os
 
@@ -22,7 +23,6 @@ static_types = {
 }
 
 def __app(environ, start_response):
-    #pprint(environ)
     path = environ['PATH_INFO']
     controller = controllers.get(path)
 
