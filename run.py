@@ -4,6 +4,8 @@ import sys
 
 from eventlet import api
 from eventlet import wsgi
+from eventlet import util
+util.wrap_socket_with_coroutine_socket()
 
 import Urlencode
 
