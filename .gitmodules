@@ -1,3 +1,3 @@
-[submodule "pg8000"]
-	path = pg8000
-	url = git://github.com/mfenniak/pg8000.git
+[submodule "py-postgresql"]
+	path = py-postgresql
+	url = git://github.com/jwp/py-postgresql.git
