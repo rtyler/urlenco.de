@@ -1,22 +1,22 @@
 #!/usr/bin/env python
 
-from Urlencode import controllers
+from MicroMVC import controller
 
-class home(controllers.BaseController):
+class home(controller.BaseController):
     content_type = 'text/html'
 
-    @controllers.action(paths=('/', '/Default.aspx'))
+    @controller.action(paths=('/', '/Default.aspx'))
     def index(self, **kwargs):
         return self.render('index')
 
-    @controllers.action()
+    @controller.action()
     def about(self, **kwargs):
         return self.render('about')
 
-    @controllers.action(paths=('/Developer.aspx',))
+    @controller.action(paths=('/developers', '/Developer.aspx',))
     def developers(self, **kwargs):
         return self.render('developers')
 
-    @controllers.action(paths=('/Stats.aspx',))
+    @controller.action(paths=('/stats', '/Stats.aspx',))
     def stats(self, **kwargs):
         return self.render('stats')
