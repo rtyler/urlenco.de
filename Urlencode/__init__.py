@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 
-import ConfigParser
-import logging
-
-import psycopg2
 import MicroMVC
 
 from Urlencode import controllers
@@ -16,3 +12,16 @@ class UrlencodeApplication(MicroMVC.Application):
         return controllers
     def views(self):
         return views
+
+    def handle_404(self, environ, start_response):
+        from Urlencode.controllers import api
+        path = environ['PATH_INFO']
+        dispatcher = api.api(start_response, **environ)
+        dispatcher.templates = self._views()
+        enc = dispatcher.can_dispatch(path)
+        if not enc:
+            return super(UrlencodeApplication, self).handle_404(environ,
+                        start_response)
+        result = [dispatcher.dispatch(encoded_url=enc) + '\r\n']
+        return dispatcher.finalize(result)
+

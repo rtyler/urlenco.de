@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
 from MicroMVC import controller
-from Urlencode import controllers
 
-class home(controllers.DBController):
+class home(controller.BaseController):
     content_type = 'text/html'
 
     @controller.action(paths=('/', '/Default.aspx'))
