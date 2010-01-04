@@ -5,6 +5,7 @@ import json
 import psycopg2
 import redis
 import time
+import urllib
 
 
 def main():
@@ -27,6 +28,7 @@ def main():
             # Forward mapping
             rconn[enc] = json.dumps({'url' : url, 'rurl' : rurl, 'created' : created, 'flags' : flags})
             # Reverse mapping
+            url = urllib.quote_plus(url)
             rconn[url] = enc
     finally:
         conn.close()
