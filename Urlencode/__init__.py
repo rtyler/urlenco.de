@@ -17,7 +17,6 @@ class UrlencodeApplication(MicroMVC.Application):
         from Urlencode.controllers import api
         path = environ['PATH_INFO']
         dispatcher = api.api(start_response, **environ)
-        dispatcher.templates = self._views()
         enc = dispatcher.can_dispatch(path)
         if not enc:
             return super(UrlencodeApplication, self).handle_404(environ,
