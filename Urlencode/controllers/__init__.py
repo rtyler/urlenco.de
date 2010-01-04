@@ -23,7 +23,7 @@ class DBController(controller.BaseController):
         return super(DBController, self).finalize(*args, **kwargs)
 
 config = ConfigParser.RawConfigParser()
-config.read('site.cfg')
+config.read(('default.cfg', 'local.cfg',))
 db_host = config.get('Database', 'host')
 db_user = config.get('Database', 'user')
 db_pass = config.get('Database', 'password')
