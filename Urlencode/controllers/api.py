@@ -86,6 +86,7 @@ class api(controller.BaseController):
             return fail
         self.code = 301
         self.headers.append(('Location', entry['url'] + '\r\n'))
+        self.redis.incr('%s-hits' % encoded_url)
         return ''
 
     def can_dispatch(self, segment):
