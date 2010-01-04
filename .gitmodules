@@ -1,6 +1,3 @@
-[submodule "py-postgresql"]
-	path = py-postgresql
-	url = git://github.com/jwp/py-postgresql.git
 [submodule "MicroMVC"]
 	path = MicroMVC
 	url = git@github.com:rtyler/MicroMVC.git
