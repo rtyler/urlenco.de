@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import time
+import urllib
 try:
     import yajl as json
 except ImportError:
@@ -46,6 +47,7 @@ class api(controller.BaseController):
         if not unencoded_url:
             return 'Fail'
 
+        unencoded_url = urllib.unquote(unencoded_url)
         encoded = self._encode(unencoded_url, redirect_type == 'http')
         encoded = 'http://urlenco.de/%s' % encoded
         return self.render('encoded', encoded=encoded)
