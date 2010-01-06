@@ -27,7 +27,7 @@ class api(controller.BaseController):
     def _encode(self, url, http_redirect=True):
         encoded = self.redis.get(url)
         if encoded:
-            return encoded
+            return 'http://urlenco.de/%s' % encoded
         encoded = logic.encoding()
         if self.redis.exists(encoded):
             while self.redis.exists(encoded):
@@ -40,7 +40,7 @@ class api(controller.BaseController):
         self.redis[encoded] = json.dumps(data)
         # Reverse mapping
         self.redis[url] = encoded
-        return encoded
+        return 'http://urlenco.de/%s' % encoded
 
     @controller.action(paths=('/Post.aspx', '/encode',))
     def encode(self, unencoded_url=None, redirect_type='http', **kwargs):
@@ -49,9 +49,7 @@ class api(controller.BaseController):
 
         unencoded_url = urllib.unquote(unencoded_url)
         encoded = self._encode(unencoded_url, redirect_type == 'http')
-        encoded = 'http://urlenco.de/%s' % encoded
         return self.render('encoded', encoded=encoded)
-
 
     def encode_json(self, encode=None, **kwargs):
         if not encode:
