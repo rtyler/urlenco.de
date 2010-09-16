@@ -7,7 +7,7 @@ import Urlencode
 
 def main():
     app = Urlencode.UrlencodeApplication()
-    return MicroMVC.run(app.run)
+    return MicroMVC.run(app.run, port=8181)
 
 if __name__ == '__main__':
     sys.exit(main())
