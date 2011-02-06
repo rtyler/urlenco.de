@@ -70,6 +70,7 @@ class api(controller.BaseController):
     @controller.action(paths=('/PostJSON.aspx', '/api'))
     def api(self, **kwargs):
         self.content_type = 'text/plain'
+        return '{}'
         if kwargs.get('encode'):
             return json.dumps(self.encode_json(**kwargs))
         if kwargs.get('decode'):
