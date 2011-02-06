@@ -20,3 +20,7 @@ class home(controller.BaseController):
     @controller.action(paths=('/stats', '/Stats.aspx',))
     def stats(self, **kwargs):
         return self.render('stats')
+
+    @controller.action(paths=('/404',))
+    def not_found(self, **kwargs):
+        return self.render('notfound')

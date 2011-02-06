@@ -14,15 +14,12 @@ from Urlencode import logic
 
 class api(controller.BaseController):
     redis = None
+    not_found = -988887
 
     def __init__(self, *args, **kwargs):
         super(api, self).__init__(*args, **kwargs)
         self.redis = Redis(db='urlencode')
         self.content_type = 'text/html'
-
-    def __del__(self):
-        if not self.redis is None:
-            self.redis.disconnect()
 
     def _encode(self, url, http_redirect=True):
         encoded = self.redis.get(url)
@@ -34,7 +31,7 @@ class api(controller.BaseController):
                 encoded = logic.encoded()
 
         rurl = logic.rdomain(url)
-        data = {'url' : url, 'url_enc' : encoded, 'created' : time.time(), 
+        data = {'url' : url, 'url_enc' : encoded, 'created' : time.time(),
                         'flags' : 0, 'rurl' : rurl}
         # Forward mapping
         self.redis[encoded] = json.dumps(data)
@@ -82,9 +79,15 @@ class api(controller.BaseController):
     def dispatch(self, encoded_url=None, **kwargs):
         if not encoded_url:
             return 'Fail'
-        entry = json.loads(self.redis[encoded_url])
+
+        entry = {}
+        if encoded_url == self.not_found:
+            entry = {'url' : 'http://urlenco.de/404'}
+        else:
+            entry = json.loads(self.redis[encoded_url])
+
         if not entry.get('url'):
-            return fail
+            return 'Fail'
         self.code = 301
         self.headers.append(('Location', entry['url'] + '\r\n'))
         return ''
@@ -92,8 +95,8 @@ class api(controller.BaseController):
     def can_dispatch(self, segment):
         pieces = segment.split('/')
         if len(pieces) > 2:
-            return False
+            return self.not_found
         url_enc = pieces[1]
         if self.redis.exists(url_enc):
             return url_enc
-        return False
+        return self.not_found
