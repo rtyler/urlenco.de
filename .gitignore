@@ -3,3 +3,4 @@
 *.py.bak
 local.cfg
 
+*.dbdump
